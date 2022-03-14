@@ -21,6 +21,7 @@ namespace ErpDemoEF.Models
 
         public virtual DbSet<Articoli> Articoli { get; set; }
         public virtual DbSet<Clienti> Clienti { get; set; }
+        public virtual DbSet<Utenti> Utenti { get; set; }
         public virtual DbSet<vwClienti> vwClienti { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -58,6 +59,19 @@ namespace ErpDemoEF.Models
 
                 entity.Property(e => e.Settore)
                     .HasMaxLength(8)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Utenti>(entity =>
+            {
+                entity.HasKey(e => e.username);
+
+                entity.Property(e => e.username)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.password)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
 

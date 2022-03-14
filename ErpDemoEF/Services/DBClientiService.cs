@@ -43,36 +43,17 @@ namespace ErpDemoEF.Services
         }
         public Clienti LeggiCliente(int id)
         {
-            return _context.Clienti.Find(id);
+            return _context.Clienti.AsNoTracking().Where(c => c.Id == id).FirstOrDefault();
         }
         public Clienti LeggiCliente(bool bMaxValue)
         {
-            //_context.Clienti.Where(cliente => cliente.Citta == "Genova");
-
-            ////int[] test = { 1, 2, 3, 4 };
-            ////test.Max(i => i);
-            //IEnumerable<Clienti> a = _context.Clienti;
-            //List<Clienti> clientiLista = a.ToList();
-
-            //int max = clientiLista.Max(cliente => cliente.Id);
-
-            //int massimo = 0;
-            //int lastId = 0;
-            //int[] test = { 1, 2, 3, 4 };
-            //int mass = test.Max();
-            //foreach (int value in test)
-            //{
-            //    if (value > massimo)
-            //        massimo = value;
-            //}
-
             int i = 0;
             if(bMaxValue)
                 i = _context.Clienti.Max(c => c.Id);
             else
                 i = _context.Clienti.Min(c => c.Id);
-            //return _context.Clienti.Find(i);
-            return _context.Clienti.Where(c => c.Id == i).FirstOrDefault();
+
+            return _context.Clienti.AsNoTracking().Where(c => c.Id == i).FirstOrDefault();
         }
         public IEnumerable<Clienti> LeggiListaClienti()
         {
