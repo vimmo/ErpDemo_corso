@@ -23,6 +23,14 @@ namespace ErpDemo
             CambiaStatoCampi(DOCUMENT_MODE != _DOC_MODE.BROWSE);
 
             _db = new DBClientiService();
+
+            BODY_RADAR = new DataTable();
+            BODY_RADAR.Columns.Clear();
+            BODY_RADAR.Columns.Add("ID", typeof(int));
+            BODY_RADAR.Columns.Add("Ragione sociale", typeof(string));
+            BODY_RADAR.Columns.Add("Indirizzo", typeof(string));
+            BODY_RADAR.Columns.Add("Città", typeof(string));
+            BODY_RADAR.Columns.Add("Settore", typeof(string));
         }
 
         private void CambiaStatoCampi(bool setEnabled)
@@ -175,6 +183,31 @@ namespace ErpDemo
             RiempiCampi(_db.LeggiCliente(CURR_ID, false));
         }
 
+        public override void OnFind()
+        {
+            Form[] lista = ParentForm.MdiChildren;
+            bool canOpen = true;
+            foreach (Form child in lista)
+            {
+                if (child.Name == "Ricerca")
+                    canOpen = false;
+            }
+            if (canOpen)
+            {
+                BODY_RADAR.Rows.Clear();
+
+                foreach (var item in _db.LeggiListaClienti().ToList())
+                {
+                    BODY_RADAR.Rows.Add(item.Id, item.RagioneSociale, item.Indirizzo, item.Citta, item.Settore);
+                }
+                
+                DOCUMENT_RADAR = new Ricerca();
+                DOCUMENT_RADAR.ricercaGridView.DataSource = BODY_RADAR;
+                DOCUMENT_RADAR.MdiParent = this.ParentForm;
+                DOCUMENT_RADAR.Text = "Ricerca Clienti";
+                DOCUMENT_RADAR.Show();
+            }
+        }
 
 
 

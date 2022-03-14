@@ -12,6 +12,9 @@ namespace ErpDemo
 {
     public partial class AnagraficaBase : Form
     {
+        public Ricerca DOCUMENT_RADAR;
+        public DataTable BODY_RADAR;
+
         private _DOC_MODE _docMode;
         public _DOC_MODE DOCUMENT_MODE
         {
