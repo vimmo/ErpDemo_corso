@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErpDemoEF.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,10 +15,13 @@ namespace ErpDemo
     public enum _DOC_TYPE { CLIENTI, ARTICOLI, MOVIMENTI };
     public partial class ErpDemo : Form
     {
+        public Utenti UserAuthenticated { get; internal set; }
 
-        public ErpDemo()
+        public ErpDemo(Utenti utente)
         {
             InitializeComponent();
+            UserAuthenticated = utente;
+            toolStripStatusLabel1.Text = "Utente: " + UserAuthenticated.username;
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -69,5 +73,7 @@ namespace ErpDemo
                 }
             }
         }
+
+
     }
 }
