@@ -15,6 +15,7 @@ namespace ErpDemo
     public partial class AnagraficaClienti : AnagraficaBase
     {
         private readonly DBClientiService _db;
+        public int CURR_ID = 0;
         public AnagraficaClienti()
         {
             InitializeComponent();
@@ -43,6 +44,7 @@ namespace ErpDemo
 
         private void RiempiCampi(Clienti cliente)
         {
+            CURR_ID = cliente.Id;
             txtId.Text = cliente.Id.ToString();
             txtRagioneSociale.Text = cliente.RagioneSociale;
             txtIndirizzo.Text = cliente.Indirizzo;
@@ -61,26 +63,29 @@ namespace ErpDemo
         }
         public override bool OnDelete()
         {
-            bool bOk = true;
             if (MessageBox.Show("Confermi eliminazione?",
                 "Elimina",
                 MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Exclamation) == DialogResult.OK)
-                bOk = true;
-            else
-                bOk = false;
+                MessageBoxIcon.Exclamation) == DialogResult.Cancel)
+                return false;
 
-            if(bOk)
+       
+            var cliente = new Clienti
             {
-                var cliente = new Clienti
-                {
-                    Id = Convert.ToInt32(txtId.Text),
-                    RagioneSociale = txtRagioneSociale.Text,
-                    Indirizzo = txtIndirizzo.Text,
-                    Citta = txtCitta.Text,
-                    Settore = txtSettore.Text
-                };
-                bOk = _db.EliminaCliente(cliente);
+                Id = Convert.ToInt32(txtId.Text),
+                RagioneSociale = txtRagioneSociale.Text,
+                Indirizzo = txtIndirizzo.Text,
+                Citta = txtCitta.Text,
+                Settore = txtSettore.Text
+            };
+            bool  bOk = _db.EliminaCliente(cliente);
+            if (!bOk)
+            {
+                MessageBox.Show(
+                      "Errore in salvataggio",
+                      "Errore",
+                      MessageBoxButtons.OK,
+                      MessageBoxIcon.Error);
             }
 
             return bOk;
@@ -154,11 +159,20 @@ namespace ErpDemo
 
         public override void OnFirst()
         {
-            RiempiCampi(_db.LeggiCliente(false));
+            RiempiCampi(_db.LeggiCliente(0,false));
         }
         public override void OnLast()
         {
-            RiempiCampi(_db.LeggiCliente(true));
+            RiempiCampi(_db.LeggiCliente(0,true));
+        }
+
+        public override void OnNext()
+        {
+            RiempiCampi(_db.LeggiCliente(CURR_ID, true));
+        }
+        public override void OnBack()
+        {
+            RiempiCampi(_db.LeggiCliente(CURR_ID, false));
         }
 
 
