@@ -26,12 +26,24 @@ namespace ErpDemo
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+
             Utenti logged = _db.Login(new Utenti { username = txtUser.Text, password = txtPassword.Text });
 
             if (logged != null)
             {
-                UserAuthenticated = logged;
-                Close();
+                Sessioni sessioneAttiva = _db.SessioneAttiva(txtUser.Text);
+                if (sessioneAttiva == null)
+                {
+                    _db.CreaSessione(txtUser.Text);
+                    UserAuthenticated = logged;
+                    Close();
+                }
+                else
+                {
+                    lblLoginError.Visible = true;
+                    lblLoginError.Text = "Utente già loggato a sistema";
+                }
+
             }
             else
             {

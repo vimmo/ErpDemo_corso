@@ -21,6 +21,8 @@ namespace ErpDemoEF.Models
 
         public virtual DbSet<Articoli> Articoli { get; set; }
         public virtual DbSet<Clienti> Clienti { get; set; }
+        public virtual DbSet<SemaforoDocumenti> SemaforoDocumenti { get; set; }
+        public virtual DbSet<Sessioni> Sessioni { get; set; }
         public virtual DbSet<Utenti> Utenti { get; set; }
         public virtual DbSet<vwClienti> vwClienti { get; set; }
 
@@ -60,6 +62,30 @@ namespace ErpDemoEF.Models
                 entity.Property(e => e.Settore)
                     .HasMaxLength(8)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<SemaforoDocumenti>(entity =>
+            {
+                entity.HasKey(e => new { e.username, e.doc, e.id });
+
+                entity.Property(e => e.username)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.doc)
+                    .HasMaxLength(4)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Sessioni>(entity =>
+            {
+                entity.HasKey(e => e.username);
+
+                entity.Property(e => e.username)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.creazione).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Utenti>(entity =>
