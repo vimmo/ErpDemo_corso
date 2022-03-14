@@ -38,8 +38,6 @@ namespace ErpDemoEF.Services
                 return true;
             else
                 return false;
-
-            //return rowAffected > 0 ? true : false;
         }
         public Clienti LeggiCliente(int id)
         {
