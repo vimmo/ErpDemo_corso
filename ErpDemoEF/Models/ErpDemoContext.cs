@@ -17,6 +17,7 @@ namespace ErpDemoEF.Models
         public ErpDemoContext(DbContextOptions<ErpDemoContext> options)
             : base(options)
         {
+            
         }
 
         public virtual DbSet<Articoli> Articoli { get; set; }

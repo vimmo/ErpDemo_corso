@@ -34,13 +34,14 @@ namespace ErpDemo
 
         private void clientiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (CanOpenForm("AnagraficaClienti"))
-            {
+            //if (CanOpenForm("AnagraficaClienti"))
+            //{
                 AnagraficaClienti cli = new AnagraficaClienti();
                 cli.MdiParent = this;
+                cli.UserAuthenticated = UserAuthenticated;
                 cli.Show();
                 //commento
-            }
+            //}
         }
 
         private void articoliToolStripMenuItem_Click(object sender, EventArgs e)
