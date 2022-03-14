@@ -46,6 +46,7 @@ namespace ErpDemo
             this.ricercaGridView.RowTemplate.Height = 25;
             this.ricercaGridView.Size = new System.Drawing.Size(800, 450);
             this.ricercaGridView.TabIndex = 0;
+            this.ricercaGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.ricercaGridView_CellMouseDoubleClick);
             // 
             // Ricerca
             // 

@@ -76,7 +76,7 @@ namespace ErpDemoEF.Services
         //}
         public IEnumerable<Clienti> LeggiListaClienti()
         {
-            return _context.Clienti;
+            return _context.Clienti.AsNoTracking();
         }
         public bool EliminaCliente(Clienti cliente)
         {

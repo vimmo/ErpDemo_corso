@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ErpDemo.Ricerca;
 
 namespace ErpDemo
 {
@@ -203,12 +204,18 @@ namespace ErpDemo
                 
                 DOCUMENT_RADAR = new Ricerca();
                 DOCUMENT_RADAR.ricercaGridView.DataSource = BODY_RADAR;
+                DOCUMENT_RADAR.ItemRadarSel += new EventHandler<ItemRadarSelectedEventArgs>(OnItemSelectedEvent);
+
                 DOCUMENT_RADAR.MdiParent = this.ParentForm;
                 DOCUMENT_RADAR.Text = "Ricerca Clienti";
                 DOCUMENT_RADAR.Show();
             }
         }
 
+        private void OnItemSelectedEvent(object sender, ItemRadarSelectedEventArgs e)
+        {
+            RiempiCampi(_db.LeggiCliente(e.SelectedID));
+        }
 
 
         private void txtRagioneSociale_Leave(object sender, EventArgs e)
