@@ -29,14 +29,15 @@ namespace ErpDemo
         {
             DBUtentiService _dbService = new DBUtentiService();
 
-            UTENTE_LOGGATO = _dbService.Login(txtUtente.Text, txtPassword.Text);     
-            
+            UTENTE_LOGGATO = _dbService.Login(txtUtente.Text, txtPassword.Text);
+
             if (UTENTE_LOGGATO != null)
             {
                 if (_dbService.SessioneAttiva(UTENTE_LOGGATO.username) != null)
                 {
                     lblMessage.Text = "UTENTE GIA' LOGGATO";
                     lblMessage.Visible = true;
+                    UTENTE_LOGGATO = null;
                 }
                 else
                 {
@@ -45,8 +46,10 @@ namespace ErpDemo
                 }
             }
             else
-                lblMessage.Visible = true;
-            
+            {
+               lblMessage.Text = "ACCESSO NEGATO!";
+               lblMessage.Visible = true;
+            }
         }
     }
 }
