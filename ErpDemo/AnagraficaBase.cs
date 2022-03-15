@@ -12,6 +12,8 @@ namespace ErpDemo
 {
     public partial class AnagraficaBase : Form
     {
+        public int CURRENT_ID = 0;
+
         private _DOC_MODE _docMode;
         public _DOC_MODE DOCUMENT_MODE
         {

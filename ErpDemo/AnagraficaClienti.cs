@@ -9,12 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ErpDemo.RicercaBase;
 
 namespace ErpDemo
 {
     public partial class AnagraficaClienti : AnagraficaBase
     {
         private readonly DBClientiService _db;
+
         public AnagraficaClienti()
         {
             InitializeComponent();
@@ -41,6 +43,7 @@ namespace ErpDemo
         }
         private void RiempiCampi(Clienti cliente)
         {
+            CURRENT_ID = cliente.Id;
             txtId.Text = cliente.Id.ToString();
             txtRagioneSociale.Text = cliente.RagioneSociale;
             txtIndirizzo.Text = cliente.Indirizzo;
@@ -154,13 +157,62 @@ namespace ErpDemo
 
         public override void OnFirst()
         {
-            RiempiCampi(_db.LeggiCliente(false));
+            RiempiCampi(_db.LeggiCliente(0, false));
         }
         public override void OnLast()
         {
-            RiempiCampi(_db.LeggiCliente(true));
+            RiempiCampi(_db.LeggiCliente(0, true));
+        }
+        public override void OnBack()
+        {
+            RiempiCampi(_db.LeggiCliente(CURRENT_ID, false));
+        }
+        public override void OnNext()
+        {
+            RiempiCampi(_db.LeggiCliente(CURRENT_ID, true));
+        }
+        public override void OnFind()
+        {
+            Form[] lista = ParentForm.MdiChildren;
+            bool canOpen = true;
+            foreach (Form child in lista)
+            {
+                if (child.Name == "RicercaBase")
+                    canOpen = false;
+            }
+            if (canOpen)
+            {
+                DataTable BODY_RADAR = new DataTable();
+                BODY_RADAR.Columns.Add("ID", typeof(int));
+                BODY_RADAR.Columns.Add("Ragione sociale", typeof(string));
+                BODY_RADAR.Columns.Add("Indirizzo", typeof(string));
+                BODY_RADAR.Columns.Add("Città", typeof(string));
+                BODY_RADAR.Columns.Add("Settore", typeof(string));
+
+                foreach (Clienti cliente in _db.LeggiListaClienti().ToList())
+                {
+                    BODY_RADAR.Rows.Add(
+                        cliente.Id,
+                        cliente.RagioneSociale,
+                        cliente.Indirizzo,
+                        cliente.Citta,
+                        cliente.Settore);
+                }
+
+                RicercaBase DOCUMENT_RADAR = new RicercaBase(BODY_RADAR);
+                DOCUMENT_RADAR.MdiParent = ParentForm;
+
+                DOCUMENT_RADAR.RigaSelezionata += new EventHandler<RicercaBase.RicercaEventArgs>(OnSelezionata);
+                DOCUMENT_RADAR.Text = "Ricerca Clienti";
+                DOCUMENT_RADAR.Show();
+            }
         }
 
+
+        public void OnSelezionata(object sender, RicercaEventArgs e)
+        {
+            RiempiCampi(_db.LeggiCliente(e.IdSelezionato));
+        }
 
 
 

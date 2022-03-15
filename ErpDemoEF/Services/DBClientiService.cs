@@ -12,7 +12,7 @@ namespace ErpDemoEF.Services
         public Clienti CreaCliente(Clienti cliente);
         public bool ModificaCliente(Clienti cliente);
         public Clienti LeggiCliente(int id);
-        public Clienti LeggiCliente(bool max);
+        public Clienti LeggiCliente(int currId, bool next);
         public IEnumerable<Clienti> LeggiListaClienti();
         public bool EliminaCliente(Clienti cliente);
     }
@@ -25,9 +25,11 @@ namespace ErpDemoEF.Services
         }
         public Clienti CreaCliente(Clienti cliente)
         {
-            _context.Clienti.Add(cliente);
-            _context.SaveChanges();
-
+            using (var _db = new ErpDemoContext())
+            {
+                _db.Clienti.Add(cliente);
+                _db.SaveChanges();
+            }
             return cliente;
         }
         public bool ModificaCliente(Clienti cliente)
@@ -45,19 +47,30 @@ namespace ErpDemoEF.Services
         {
             return _context.Clienti.AsNoTracking().Where(c => c.Id == id).FirstOrDefault();
         }
-        public Clienti LeggiCliente(bool bMaxValue)
+        public Clienti LeggiCliente(int currId, bool next)
         {
-            int i = 0;
-            if(bMaxValue)
-                i = _context.Clienti.Max(c => c.Id);
+            Clienti val = null;
+            if (next)
+            {
+                if (currId != 0)
+                    val = _context.Clienti.AsNoTracking().Where(c => c.Id > currId).OrderBy(c => c.Id).FirstOrDefault();
+                if (val == null)
+                    val = _context.Clienti.AsNoTracking().Where(c => c.Id == _context.Clienti.Max(c => c.Id)).FirstOrDefault();
+            }
             else
-                i = _context.Clienti.Min(c => c.Id);
+            {
+                if (currId != 0)
+                    val = _context.Clienti.AsNoTracking().Where(c => c.Id < currId).OrderByDescending(c => c.Id).FirstOrDefault();
+                if (val == null)
+                    val = _context.Clienti.AsNoTracking().Where(c => c.Id == _context.Clienti.Min(c => c.Id)).FirstOrDefault();
+            }
 
-            return _context.Clienti.AsNoTracking().Where(c => c.Id == i).FirstOrDefault();
+            return val;
+
         }
         public IEnumerable<Clienti> LeggiListaClienti()
         {
-            return _context.Clienti;
+            return _context.Clienti.AsNoTracking();
         }
         public bool EliminaCliente(Clienti cliente)
         {
