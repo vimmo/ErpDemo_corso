@@ -12,6 +12,9 @@ namespace ErpDemoEF.Services
         public void CreaSessione(string utente);
         public void EliminaSessione(string utente);
         public Sessioni SessioneAttiva(string utente);
+        public string DocumentoBloccato(string documento, int id);
+        public void BloccaDocumento(string utente, string documento, int id);
+        public void SbloccaDocumento(string utente, string documento, int id);
     }
     public class DBUtentiService : IDBUTentiService
     {
@@ -52,6 +55,37 @@ namespace ErpDemoEF.Services
                 {
                     _db.Sessioni.Remove(se);
                     _db.SaveChanges();
+                }
+            }
+        }
+        public string DocumentoBloccato(string documento, int id)
+        {
+            using (var context = new ErpDemoContext())
+            {
+                SemaforoDocumenti sem = context.SemaforoDocumenti.Where(u => u.doc == documento && u.id == id).FirstOrDefault();
+                if (sem != null)
+                    return sem.username;
+                else
+                    return "";
+            }
+        }
+        public void BloccaDocumento(string utente, string documento, int id)
+        {
+            using (var context = new ErpDemoContext())
+            {
+                context.SemaforoDocumenti.Add(new SemaforoDocumenti { username = utente, doc = documento, id = id });
+                context.SaveChanges();
+            }
+        }
+        public void SbloccaDocumento(string utente, string documento, int id)
+        {
+            using (var context = new ErpDemoContext())
+            {
+                SemaforoDocumenti sem = context.SemaforoDocumenti.Where(u => u.username == utente && u.doc == documento && u.id == id).FirstOrDefault();
+                if (sem != null)
+                {
+                    context.SemaforoDocumenti.Remove(sem);
+                    context.SaveChanges();
                 }
             }
         }
