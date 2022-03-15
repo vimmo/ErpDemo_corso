@@ -16,7 +16,15 @@ namespace ErpDemo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ErpDemo());
+            
+            Login login = new Login();
+
+            Application.Run(login);
+
+            if(login.UTENTE_LOGGATO != null)
+            {
+                Application.Run(new ErpDemo(login.UTENTE_LOGGATO));
+            }
         }
     }
 }

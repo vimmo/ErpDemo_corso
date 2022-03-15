@@ -35,7 +35,10 @@ namespace ErpDemo
             this.articoliToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logisticaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.movimentiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelUtente = new System.Windows.Forms.ToolStripStatusLabel();
             this.mainMenuStrip.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenuStrip
@@ -45,7 +48,8 @@ namespace ErpDemo
             this.logisticaToolStripMenuItem});
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
-            this.mainMenuStrip.Size = new System.Drawing.Size(693, 24);
+            this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.mainMenuStrip.Size = new System.Drawing.Size(808, 24);
             this.mainMenuStrip.TabIndex = 1;
             this.mainMenuStrip.Text = "menuStrip1";
             // 
@@ -86,19 +90,39 @@ namespace ErpDemo
             this.movimentiToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.movimentiToolStripMenuItem.Text = "Movimenti";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelUtente});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 497);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(808, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelUtente
+            // 
+            this.toolStripStatusLabelUtente.Name = "toolStripStatusLabelUtente";
+            this.toolStripStatusLabelUtente.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabelUtente.Text = "toolStripStatusLabel1";
+            // 
             // ErpDemo
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(693, 450);
+            this.ClientSize = new System.Drawing.Size(808, 519);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mainMenuStrip);
             this.IsMdiContainer = true;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "ErpDemo";
             this.Text = "Erp Demo";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ErpDemo_FormClosing);
             this.Load += new System.EventHandler(this.OnLoad);
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -112,6 +136,8 @@ namespace ErpDemo
         private System.Windows.Forms.ToolStripMenuItem articoliToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logisticaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem movimentiToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelUtente;
     }
 }
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ErpDemoEF.Models;
+using ErpDemoEF.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,12 +14,15 @@ namespace ErpDemo
 {
     public enum _DOC_MODE { NEW, EDIT, BROWSE };
     public enum _DOC_TYPE { CLIENTI, ARTICOLI, MOVIMENTI };
+    
     public partial class ErpDemo : Form
     {
-
-        public ErpDemo()
+        public Utenti CURR_USR;
+        public ErpDemo(Utenti utente)
         {
             InitializeComponent();
+            CURR_USR = utente;
+            toolStripStatusLabelUtente.Text = "Utente: " + CURR_USR.username;
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -67,6 +72,12 @@ namespace ErpDemo
                     e.Cancel = true;
                     break;
                 }
+            }
+
+            if(e.Cancel == false)
+            {
+                DBUtentiService _dbService = new DBUtentiService();
+                _dbService.EliminaSessione(CURR_USR.username);
             }
         }
     }
