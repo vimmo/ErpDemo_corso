@@ -16,7 +16,8 @@ namespace ErpDemo
     public partial class AnagraficaClienti : AnagraficaBase
     {
         private readonly DBClientiService _db;
-
+        private readonly DBUtentiService _dbUtenti;
+        public Utenti UserAuthenticated { get; set; }
         public AnagraficaClienti()
         {
             InitializeComponent();
@@ -24,6 +25,7 @@ namespace ErpDemo
             CambiaStatoCampi(DOCUMENT_MODE != _DOC_MODE.BROWSE);
 
             _db = new DBClientiService();
+            _dbUtenti = new DBUtentiService();
         }
         private void CambiaStatoCampi(bool setEnabled)
         {
@@ -55,9 +57,24 @@ namespace ErpDemo
             CambiaStatoCampi(DOCUMENT_MODE != _DOC_MODE.BROWSE);
             PulisciCampi();
         }
-        public override void OnEdit()
+        public override bool OnEdit()
         {
-            CambiaStatoCampi(DOCUMENT_MODE != _DOC_MODE.BROWSE);
+            string utente = _dbUtenti.DocumentoBloccato("CLI", CURRENT_ID);
+            if(utente != "")
+            {
+                MessageBox.Show("Documento impegnato dall'utente: " + utente, 
+                    "Documento bloccato", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Exclamation);
+                return false;
+
+            }
+            else
+            {
+                _dbUtenti.BloccaDocumento(UserAuthenticated.username, "CLI", CURRENT_ID);
+                CambiaStatoCampi(DOCUMENT_MODE != _DOC_MODE.BROWSE);
+                return true;
+            }
         }
         public override bool OnDelete()
         {
@@ -127,15 +144,19 @@ namespace ErpDemo
             {
                 bOk = _db.ModificaCliente(cliente);
             }
-               
+
 
             if (bOk)
+            {
                 CambiaStatoCampi(false);
+                _dbUtenti.SbloccaDocumento(UserAuthenticated.username,
+                    "CLI", CURRENT_ID);
+            }
             else
                 MessageBox.Show(
                     "Errore in " + (DOCUMENT_MODE == _DOC_MODE.NEW ? "inserimento" : "modifica"),
                     "Errore",
-                    MessageBoxButtons.OK, 
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
             return bOk;
@@ -151,7 +172,9 @@ namespace ErpDemo
 
             CambiaStatoCampi(false);
             PulisciCampi();
-            
+            _dbUtenti.SbloccaDocumento(UserAuthenticated.username,
+            "CLI", CURRENT_ID);
+
             return true;
         }
 

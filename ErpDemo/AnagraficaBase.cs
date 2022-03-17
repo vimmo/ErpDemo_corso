@@ -44,7 +44,7 @@ namespace ErpDemo
             DOCUMENT_MODE = _DOC_MODE.BROWSE;
         }
         virtual public void OnNew() { }
-        virtual public void OnEdit() { }
+        virtual public bool OnEdit() { return true; }
         virtual public bool OnDelete() { return true; }
         virtual public void OnFirst() { }
         virtual public void OnBack() { }
@@ -62,8 +62,8 @@ namespace ErpDemo
 
         private void modificaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DOCUMENT_MODE = _DOC_MODE.EDIT;
-            OnEdit();
+            if(OnEdit())
+                DOCUMENT_MODE = _DOC_MODE.EDIT;
         }
 
         private void eliminaToolStripMenuItem_Click(object sender, EventArgs e)

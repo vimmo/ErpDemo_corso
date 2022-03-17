@@ -1,0 +1,18 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <script>
+        // richiesta GET.
+        fetch('https://localhost:44388/Clienti')
+            // gestisci il successo
+            .then(response => response.json())  // converti a json
+            .then(json => console.log(json))    // stampa i dati sulla console
+    .catch(err => console.log('Request Failed', err)); // gestisci gli errori
+    </script>
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>

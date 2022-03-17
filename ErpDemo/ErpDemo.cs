@@ -35,8 +35,8 @@ namespace ErpDemo
             {
                 AnagraficaClienti cli = new AnagraficaClienti();
                 cli.MdiParent = this;
+                cli.UserAuthenticated = CURR_USR;
                 cli.Show();
-                //commento
             }
         }
 
